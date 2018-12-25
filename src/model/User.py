@@ -19,5 +19,5 @@ class User(db.Model):
         return '<User {}>'.format(User.__dict__)
 
 
-if __name__  == "__main__":
+if __name__ == "__main__":
     print(User())

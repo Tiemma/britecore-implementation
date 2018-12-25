@@ -16,5 +16,6 @@ clients = db.Table('client_to_feature_request',
 product_areas = db.Table('product_area_to_feature_request',
                          db.Column('product_area_id', db.Integer, db.ForeignKey('product_area.id'), primary_key=True),
                          db.Column('feature_request_id', db.Integer, db.ForeignKey('feature_request.id'), primary_key=True),
-                         UniqueConstraint('product_area_id', 'feature_request_id', name='client_feature_request_unique')
+                         UniqueConstraint('product_area_id', 'feature_request_id',
+                                          name='product_area_feature_request_unique')
                          )
