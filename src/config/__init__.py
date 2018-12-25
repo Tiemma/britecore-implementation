@@ -7,21 +7,33 @@ from os import urandom, getenv
 from os.path import join, abspath
 
 
-
 class Config:
     """
     Config base class
     """
+
+    # Flask native configs
     DEBUG = True
     SECRET_KEY = urandom(256)
-    SQLALCHEMY_DATABASE_URI = "sqlite:///{db}".format(db=abspath(join('../../database', 'app.db')))
     CSRF_ENABLED = True
     CSRF_SESSION_KEY = urandom(256)
+
+    # Flask restplus configs
     RESTPLUS_VALIDATE = True
+
+    # JWT configs
     JWT_SECRET_KEY = urandom(256)
     JWT_BLACKLIST_ENABLED = True
     JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
     JWT_ERROR_MESSAGE_KEY = "message"
+
+    # SQL Alchemy configs
+    SQLALCHEMY_DATABASE_URI = "sqlite:///{db}".format(db=abspath(join(getenv('DB_LOCATION', '../database'), 'app.db')))
+    SQLALCHEMY_ECHO=True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    def __repr__(self):
+        return '<Config {}>'.format(Config.__dict__)
 
 
 class Development(Config):
@@ -44,6 +56,7 @@ class Production(Config):
     """
     DEBUG = False
     THREADS_PER_PAGE = 8
+    SQLALCHEMY_ECHO=False
 
 
 CONFIG_BY_NAME = dict(
@@ -53,4 +66,4 @@ CONFIG_BY_NAME = dict(
 )
 
 if __name__ == "__main__":
-    print(Config.__dict__)
+    print(Config())
