@@ -3,13 +3,13 @@ Project level flask configuration
 
 """
 
-from os import urandom
+from os import urandom, getenv
 
-POSTGRES_USER = "postgres"
-POSTGRES_PASSWORD = "password"
-POSTGRES_DB = "stackoverflow"
-POSTGRES_HOST = "localhost"
-POSTGRES_PORT = 5432
+DEFAULT_POSTGRES_USER = "postgres"
+DEFAULT_POSTGRES_PASSWORD = "password"
+DEFAULT_POSTGRES_DB = "stackoverflow"
+DEFAULT_POSTGRES_HOST = "localhost"
+DEFAULT_POSTGRES_PORT = 5432
 
 
 class Config:
@@ -19,11 +19,11 @@ class Config:
     DEBUG = True
     SECRET_KEY = urandom(256)
     POSTGRES_CONFIG = {
-        'user': POSTGRES_USER,
-        'password': POSTGRES_PASSWORD,
-        'dbname': POSTGRES_DB,
-        'host': POSTGRES_HOST,
-        'port': POSTGRES_PORT,
+        'user': getenv('POSTGRES_USER', DEFAULT_POSTGRES_USER),
+        'password': getenv('POSTGRES_PASSWORD', DEFAULT_POSTGRES_PASSWORD),
+        'dbname': getenv('POSTGRES_DB', DEFAULT_POSTGRES_DB),
+        'host': getenv('POSTGRES_HOST', DEFAULT_POSTGRES_HOST),
+        'port': getenv('POSTGRES_PORT', DEFAULT_POSTGRES_PORT),
     }
     DATABASE_URI = """postgresql://
     %(user)s:%(password)s@
@@ -49,14 +49,6 @@ class Testing(Config):
     Development configuration
     """
     THREADS_PER_PAGE = 1
-    POSTGRES_PASSWORD = ""
-    POSTGRES_CONFIG = {
-        'user': POSTGRES_USER,
-        'password': POSTGRES_PASSWORD,
-        'dbname': POSTGRES_DB,
-        'host': POSTGRES_HOST,
-        'port': POSTGRES_PORT,
-    }
 
 
 class Production(Config):
