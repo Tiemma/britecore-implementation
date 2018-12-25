@@ -4,12 +4,8 @@ Project level flask configuration
 """
 
 from os import urandom, getenv
+from os.path import join, abspath
 
-DEFAULT_POSTGRES_USER = "postgres"
-DEFAULT_POSTGRES_PASSWORD = "password"
-DEFAULT_POSTGRES_DB = "stackoverflow"
-DEFAULT_POSTGRES_HOST = "localhost"
-DEFAULT_POSTGRES_PORT = 5432
 
 
 class Config:
@@ -18,16 +14,7 @@ class Config:
     """
     DEBUG = True
     SECRET_KEY = urandom(256)
-    POSTGRES_CONFIG = {
-        'user': getenv('POSTGRES_USER', DEFAULT_POSTGRES_USER),
-        'password': getenv('POSTGRES_PASSWORD', DEFAULT_POSTGRES_PASSWORD),
-        'dbname': getenv('POSTGRES_DB', DEFAULT_POSTGRES_DB),
-        'host': getenv('POSTGRES_HOST', DEFAULT_POSTGRES_HOST),
-        'port': getenv('POSTGRES_PORT', DEFAULT_POSTGRES_PORT),
-    }
-    DATABASE_URI = """postgresql://
-    %(user)s:%(password)s@
-    %(host)s:%(port)s/%(dbname)s""" % POSTGRES_CONFIG
+    SQLALCHEMY_DATABASE_URI = "sqlite:///{db}".format(db=abspath(join('../../database', 'app.db')))
     CSRF_ENABLED = True
     CSRF_SESSION_KEY = urandom(256)
     RESTPLUS_VALIDATE = True
@@ -66,4 +53,4 @@ CONFIG_BY_NAME = dict(
 )
 
 if __name__ == "__main__":
-    print(Config)
+    print(Config.__dict__)
