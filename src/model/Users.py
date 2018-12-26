@@ -1,7 +1,7 @@
 """
 Model class for the user
 """
-from typing import Dict, AnyStr
+from typing import Dict, AnyStr, NewType, Type
 
 from flask_jwt_extended import create_refresh_token, create_access_token
 from passlib.hash import pbkdf2_sha256 as sha256
@@ -46,7 +46,7 @@ class Users(DbModel):
         return sha256.verify(password, self.password_hash)
 
     @staticmethod
-    def create_jwt_tokens(data: Dict) -> Dict:
+    def create_jwt_tokens(data: Type[DbModel]) -> Dict:
         return {"access_token": create_access_token(data), "refresh_token": create_refresh_token(data)}
 
 
@@ -54,3 +54,5 @@ if __name__ == "__main__":
     payload = {'iws_employee_id': 'string', 'username': 'string', 'email': 'emmanueltimmy98@gmail.com', 'password': 'string'}
     print(Users(**payload))
     print(Users.create_jwt_tokens("hh"))
+
+
