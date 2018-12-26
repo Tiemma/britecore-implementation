@@ -9,7 +9,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from src.model import DbModel, db
 
 
-class User(DbModel):
+class Users(DbModel):
     """
     Model class implementation
     """
@@ -52,5 +52,5 @@ class User(DbModel):
 
 if __name__ == "__main__":
     payload = {'iws_employee_id': 'string', 'username': 'string', 'email': 'emmanueltimmy98@gmail.com', 'password': 'string'}
-    print(User(**payload))
-    print(User.create_jwt_tokens("hh"))
+    print(Users(**payload))
+    print(Users.create_jwt_tokens("hh"))
