@@ -5,12 +5,18 @@ name = "pypi"
 
 [dev-packages]
 pylint = "*"
+mypy = "*"
+flask-queryinspect = "*"
 
 [packages]
 flask = "*"
 flask-restplus = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
+passlib = "*"
+flask-jwt-extended = "*"
+flask-limiter = "*"
+flask-cors = "*"
 
 [requires]
-python_version = "3.5"
+python_version = "3.6"
