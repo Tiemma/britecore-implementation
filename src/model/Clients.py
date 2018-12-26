@@ -4,7 +4,7 @@ Model class for the client
 from src.model import db, DbModel
 
 
-class Client(DbModel):
+class Clients(DbModel):
     """
     Model class implementation
     """
@@ -18,4 +18,4 @@ class Client(DbModel):
 
 
 if __name__ == "__main__":
-    print(Client())
+    print(Clients())
