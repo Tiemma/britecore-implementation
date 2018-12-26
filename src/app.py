@@ -1,9 +1,12 @@
-from src import app
+from src import AppFactory
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+appFactory = AppFactory()
+appFactory.init_with_api()
+appFactory.init_with_db()
+appFactory.init_with_query_inspect()
+
+app = appFactory.app
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
