@@ -22,6 +22,9 @@ class Config:
     # Flask restplus configs
     RESTPLUS_VALIDATE = True
 
+    # Rate limiter configs
+    RATELIMIT_HEADERS_ENABLED = True
+
     # JWT configs
     JWT_SECRET_KEY = urandom(256)
     JWT_BLACKLIST_ENABLED = True
