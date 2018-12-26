@@ -1,7 +1,7 @@
 """
 Controller functions for handling route related functions
 """
-from typing import Dict
+from typing import Dict, Tuple
 
 
 class ResponseBody:
@@ -23,12 +23,12 @@ class ResponseBody:
             raise NotImplementedError("Status must not be null in response body")
 
         self.data = data
-        self.data.update(kwargs)
+        self.data.update(kwargs) if kwargs else None
         self.message = message
         self.status = status
 
     @property
-    def body(self):
+    def body(self) -> Tuple[Dict, int]:
         return {'data': self.data, 'message': self.message, 'status': self.status}, self.status
 
     @property
