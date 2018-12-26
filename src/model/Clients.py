@@ -1,10 +1,10 @@
 """
 Model class for the client
 """
-from src import db
+from src.model import db, DbModel
 
 
-class Client(db.Model):
+class Client(DbModel):
     """
     Model class implementation
     """
@@ -14,8 +14,8 @@ class Client(db.Model):
     address = db.Column(db.Text())
 
     def __repr__(self):
-        return '<Client {}>'.format(Client.__dict__)
+        return '<{} {}>'.format(self.__table__, self.__dict__)
 
 
-if __name__  == "__main__":
+if __name__ == "__main__":
     print(Client())

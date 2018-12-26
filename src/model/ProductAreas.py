@@ -1,10 +1,10 @@
 """
 Model class for the product area
 """
-from src import db
+from src.model import db, DbModel
 
 
-class ProductArea(db.Model):
+class ProductArea(DbModel):
     """
     Model class implementation
     """
@@ -12,7 +12,7 @@ class ProductArea(db.Model):
     name = db.Column(db.String(64), index=True, unique=True)
 
     def __repr__(self):
-        return '<User {}>'.format(ProductArea.__dict__)
+        return '<{} {}>'.format(self.__table__, self.__dict__)
 
 
 if __name__ == "__main__":
