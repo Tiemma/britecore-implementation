@@ -36,7 +36,7 @@ class Login(Resource):
     """
     logger = Logger.get_logger(__name__)
 
-    @AUTH_NS.expect(LOGIN)
+    @AUTH_NS.expect(LOGIN, validate=True)
     def post(self):
         """
 
@@ -44,12 +44,21 @@ class Login(Resource):
         """
         payload = request.json
         self.logger.debug(payload)
-        return {}, HTTPStatus.OK
+        data = Users.query.filter_by(username=payload['username']).first()
+        self.logger.debug(data)
+        if not data or not data.verify_password(payload['password']):
+            return ResponseBody({}, "Invalid username / password", HTTPStatus.NOT_FOUND).body
+        token = Users.create_jwt_tokens(data.as_dict())
+        return ResponseBody(data.as_dict(), "Login was successful", HTTPStatus.OK, token=token).body
 
 
 @AUTH_NS.route("/logout")
 @AUTH_NS.response(HTTPStatus.NOT_FOUND,
                   "User not found and logout request rejected")
+@AUTH_NS.response(HTTPStatus.OK,
+                  "User was found and login was successful")
+@AUTH_NS.response(HTTPStatus.LOOP_DETECTED,
+                  "Rate limiter threshold was hit")
 class Logout(Resource):
     """
     Login controller resource
