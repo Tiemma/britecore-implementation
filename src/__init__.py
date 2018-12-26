@@ -47,8 +47,10 @@ class AppFactory:
         self.__limiter = Limiter(
             self.__app,
             key_func=get_remote_address,
-            default_limits=["30 per minute", "1 per second"],
+            default_limits=["60 per minute"],
         )
+        for handler in self.__app.logger.handlers:
+            self.__limiter.logger.addHandler(handler)
         CORS(self.__app)
 
     def init_with_query_inspect(self):
