@@ -4,7 +4,7 @@ Model class for the product area
 from src.model import db, DbModel
 
 
-class ProductArea(DbModel):
+class ProductAreas(DbModel):
     """
     Model class implementation
     """
@@ -16,4 +16,4 @@ class ProductArea(DbModel):
 
 
 if __name__ == "__main__":
-    print(ProductArea())
+    print(ProductAreas())
