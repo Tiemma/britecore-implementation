@@ -1,21 +1,30 @@
 """
 Base class for importing model definitions
 """
-from sqlalchemy import UniqueConstraint
 
-from src import db
+from flask_sqlalchemy import SQLAlchemy
 
-clients = db.Table('client_to_feature_request',
-                   db.Column('client_id', db.Integer, db.ForeignKey('client.id'), primary_key=True),
-                   db.Column('feature_request_id', db.Integer, db.ForeignKey('feature_request.id'), primary_key=True),
-                   db.Column('priority', db.Integer, index=True, comment="Priority is placed here as each client in a "
-                                                                         "feature request feature must have a priority"),
-                   UniqueConstraint('client_id', 'feature_request_id', name='client_feature_request_unique')
-                   )
+"""
+Had to do a double declaration of app here because I couldn't import src.factory
+I would refactor in the future, hopefully!
 
-product_areas = db.Table('product_area_to_feature_request',
-                         db.Column('product_area_id', db.Integer, db.ForeignKey('product_area.id'), primary_key=True),
-                         db.Column('feature_request_id', db.Integer, db.ForeignKey('feature_request.id'), primary_key=True),
-                         UniqueConstraint('product_area_id', 'feature_request_id',
-                                          name='product_area_feature_request_unique')
-                         )
+There's a cyclic dependency since create_api imports Users and this uses the db instance which calls AppFacory
+and restarts the dependency loop, would fix at a later date
+
+UPDATE: DB is instantiated from the AppFactory class in the src package
+"""
+
+db = SQLAlchemy()
+
+
+class DbModel(db.Model):
+
+    __abstract__ = True
+
+    def __repr__(self):
+        return '<{} {}>'.format(self.__table__, self.__dict__)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns if 'password' not in c.name}
+
+
